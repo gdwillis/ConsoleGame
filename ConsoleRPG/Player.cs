@@ -18,14 +18,22 @@ namespace ConsoleRPG
         //  GameObject fireWand = new GameObject(ConsoleColor.Red);
         Item item; 
         public bool hasCompleteLevel = false;
+
+        private ConsoleKey saveKey;
         Inventory inventory;
         private bool isAlive;
-        private ConsoleKey saveKey; 
         public bool IsAlive
         {
             get { return isAlive; }
         }
-        
+
+        private bool hasWon;
+        public bool HasWon
+        {
+            get { return hasWon; }
+        }
+
+
         bool isInteracting;
         public bool IsInteracting
         {
@@ -34,7 +42,8 @@ namespace ConsoleRPG
 
         public Player(): base()
         {
-            isAlive = true; 
+            isAlive = true;
+            hasWon = false; 
             color = ConsoleColor.Blue;
             label = 'P';
             inventory = new Inventory();
@@ -151,6 +160,7 @@ namespace ConsoleRPG
 
         void endInteraction()
         {
+           
             if (item.RemoveImmediatly)
             {
                 isInteracting = false;
@@ -159,6 +169,7 @@ namespace ConsoleRPG
                     item.remove();
                 }
                 inventory.draw();
+                
             }
             else
             {
@@ -169,6 +180,12 @@ namespace ConsoleRPG
                     if (item.CanRemove)
                     {
                         item.remove();
+                    }               
+                    if (item.Type == Type.princess)
+                    {
+                        isInteracting = false;
+                        hasWon = true;
+                        return;
                     }
                     inventory.draw();
                 }

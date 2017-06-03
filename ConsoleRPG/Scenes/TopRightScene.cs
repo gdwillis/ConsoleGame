@@ -20,6 +20,7 @@ namespace ConsoleRPG
             trigger2 = new Item(2, 2, map, Type.trigger);
             new Item(Constants.WINDOW_WIDTH - 10, 6, map, Type.block);
             new Item(10, 6, map, Type.block);
+            new Item(10, 10, map, Type.yellowKey);
         }
 
         public override void reset()
@@ -59,7 +60,14 @@ namespace ConsoleRPG
         }
         public override void placePlayer(FromDirection fromDirection = FromDirection.Top)
         {
-            base.placePlayer(FromDirection.Bottom);
+            if (player.previouseRoom == Destinations.RightRoom)
+            {
+                base.placePlayer(FromDirection.Bottom);
+            }
+            else if (player.previouseRoom == Destinations.BossKeyRoom)
+            {
+                base.placePlayer(FromDirection.Top);
+            }
         }
     }
 

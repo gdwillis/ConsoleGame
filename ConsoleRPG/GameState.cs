@@ -11,32 +11,36 @@ namespace ConsoleRPG
     {
         static Player player;
         static bool hasLevelStarted;
-        static bool hasGameEnded;
 
+        static Scene currentScene;
         static OutsideScene outsideScene;
         static FirstScene firstScene;
         static SecondScene secondScene;
         static RightScene rightScene;
-        static BossDoorScene bossScene;
+        static BossDoorScene bossDoorScene;
         static WandScene wandScene;
-        static TopRightScene topRightRoom; 
+        static TopRightScene topRightRoom;
+        static BossKeyScene bossKeyScene;
+        static BossScene bossScene;
+        static PrincessScene princessScene; 
 
-        static Scene currentScene; 
         public static void Start()
         {
             player = new Player();
-            player.currentRoom = Destinations.TopRightRoom; 
+            player.currentRoom = Destinations.Outside; 
             outsideScene = new OutsideScene(player);
             firstScene = new FirstScene(player);
             secondScene = new SecondScene(player);
             rightScene = new RightScene(player);
-            bossScene = new BossDoorScene(player);
+            bossDoorScene = new BossDoorScene(player);
             wandScene = new WandScene(player);
             topRightRoom = new TopRightScene(player);
-            
+            bossKeyScene = new BossKeyScene(player);
+            bossScene = new BossScene(player);
+            princessScene = new PrincessScene(player); 
+
             hasLevelStarted = false;
-            hasGameEnded = false;
-            while (!hasGameEnded && player.IsAlive)
+            while (player.IsAlive && !player.HasWon)
             {
                 if (!hasLevelStarted)
                 {
@@ -90,10 +94,29 @@ namespace ConsoleRPG
 
         static void EndGame()
         {
-            hasGameEnded = true;
             currentScene.clearScreen();
-            System.Console.WriteLine("Congradulations you have completed the game!");
-            System.Console.Read();
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.SetCursorPosition(2, 2);
+            if (player.IsAlive)
+            {
+                System.Console.WriteLine("Congradulations you have completed the game!");
+            }
+            else
+            {
+                System.Console.WriteLine("Game Over!");
+            }
+
+            System.Console.WriteLine("Would you like to play again?");
+            System.Console.WriteLine("Type (y) for yes or (n) for no");
+            ConsoleKeyInfo keyPressed = Console.ReadKey(true);
+            if (keyPressed.Key == ConsoleKey.Y)
+            {
+                Start(); 
+            }
+            else if (keyPressed.Key == ConsoleKey.N)
+            {
+                return;
+            }
         }
 
   
@@ -123,7 +146,7 @@ namespace ConsoleRPG
 
                 case Destinations.BossDoorRoom:
                     {
-                        currentScene = bossScene; 
+                        currentScene = bossDoorScene; 
                         break;
                     }
 
@@ -144,10 +167,17 @@ namespace ConsoleRPG
                     }
                 case Destinations.BossKeyRoom:
                     {
+                        currentScene = bossKeyScene; 
                         break;
                     }
                 case Destinations.BossRoom:
                     {
+                        currentScene = bossScene;
+                        break;
+                    }
+                case Destinations.PrincessRoom:
+                    {
+                        currentScene = princessScene;
                         break;
                     }
                     //World.reDrawMap(); 

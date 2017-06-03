@@ -12,19 +12,9 @@ namespace ConsoleRPG
         {
             drawRoom();
 
-            //draw back door
-            for (int x = Constants.WINDOW_WIDTH / 2 - 4; x < Constants.WINDOW_WIDTH / 2 + 1; x++)
-            {
-                for (int y = Constants.WINDOW_HEIGHT - 9; y < Constants.WINDOW_HEIGHT - 6; y++)
-                {
-                    new GameObject(x, y, ConsoleColor.DarkGray, map, ' ', true);  
-                    
-                }
-            }
-
+            drawBottomPortal(Destinations.Outside, Door.BlockedDoor);
             drawTopPortal(Destinations.SecondRoom, Door.OpenDoor);
-
-            Console.BackgroundColor = Constants.BACKGROUND_COLOR;
+            
             new Item(Constants.WINDOW_WIDTH - 20, 7, map, Type.yellowKey);
 
         }

@@ -8,7 +8,7 @@ namespace ConsoleRPG
 {
     //programming exercise: change this class to be more object oriented by using inheritance
 
-    enum Type { blueKey, yellowKey, redKey, potion, ether, iceWand, oldMan, bluedoor, reddoor, yellowdoor, lavaTile, block, trigger };
+    enum Type { blueKey, yellowKey, redKey, potion, ether, iceWand, oldMan, bluedoor, reddoor, yellowdoor, lavaTile, block, trigger, bossTrigger, princess };
    
     class Item : GameObject
     {
@@ -96,6 +96,13 @@ namespace ConsoleRPG
                         break;
                     }
 
+                case Type.princess:
+                    {
+                        color = ConsoleColor.Cyan;
+                        label = 'P';
+                        break;
+                    }
+
                 case Type.bluedoor:
                     {
                         color = ConsoleColor.Blue;
@@ -134,6 +141,13 @@ namespace ConsoleRPG
                         color = ConsoleColor.DarkGreen;
                         label = 'T';
                         canRemove = false; 
+                        break;
+                    }
+                case Type.bossTrigger:
+                    {
+                        color = ConsoleColor.Black;
+                        label = ' ';
+                        hasCollision = false; 
                         break;
                     }
             }
@@ -207,6 +221,16 @@ namespace ConsoleRPG
                 case Type.trigger:
                     {
                         presentTriggerDialog(inventory);
+                        break;
+                    }
+                case Type.bossTrigger:
+                    {
+                        presentBossTriggerDialog(inventory);
+                        break;
+                    }
+                case Type.princess:
+                    {
+                        presentPrincessDialog(inventory);
                         break;
                     }
             }
@@ -325,6 +349,22 @@ namespace ConsoleRPG
             Console.WriteLine("It looks like something can be pushed on to this switch.");
             hasEndedInteraction = true;
 
+        }
+
+        void presentBossTriggerDialog(Inventory inventory)
+        {
+            inventory.clearInventoryBox();
+            Console.WriteLine("So you surrived my dungeon, but now you must face me! MUHAHAHA!");
+            hasEndedInteraction = true;
+            isSet = true; 
+
+        }
+
+        void presentPrincessDialog(Inventory inventory)
+        {
+            inventory.clearInventoryBox();
+            Console.WriteLine("Thank you for saving me!");
+            hasEndedInteraction = true; 
         }
 
         void presentOldManDialog(Inventory inventory)

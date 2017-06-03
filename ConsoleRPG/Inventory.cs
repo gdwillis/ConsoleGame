@@ -75,7 +75,7 @@ namespace ConsoleRPG
 
         public void drawBorders()
         {
-            clearInventoryBox(); 
+         
             Console.BackgroundColor = Constants.FOREGROUND_COLOR;
             Console.ForegroundColor = Constants.FOREGROUND_COLOR;
 

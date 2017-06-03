@@ -25,11 +25,11 @@ namespace ConsoleRPG
             }
 
             drawRoom();
-          
-            drawTopPortal(Destinations.BossRoom, Door.RedDoor);
-            drawRightPortal(Destinations.SecondRoom, Door.OpenDoor);
 
-            Console.BackgroundColor = Constants.BACKGROUND_COLOR;
+            // drawTopPortal(Destinations.BossRoom, Door.RedDoor);
+            drawTopPortal(Destinations.BossRoom, Door.OpenDoor);
+            drawRightPortal(Destinations.SecondRoom, Door.OpenDoor);
+            
             new Item(2, 2, map, Type.ether);
             new Item(Constants.WINDOW_WIDTH - 3, 2, map, Type.potion);
 

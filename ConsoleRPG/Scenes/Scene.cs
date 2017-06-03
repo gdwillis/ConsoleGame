@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleRPG
 {
-    enum Destinations { Outside, FirstRoom, SecondRoom, BossDoorRoom, BossRoom, RightRoom, WandRoom, TopRightRoom, BossKeyRoom };
+    enum Destinations { Outside, FirstRoom, SecondRoom, BossDoorRoom, BossRoom, RightRoom, WandRoom, TopRightRoom, BossKeyRoom, PrincessRoom };
     enum FromDirection { Top, Bottom, Left, Right }
     enum Door { RedDoor, YellowDoor, BlueDoor, OpenDoor, BlockedDoor }
     class Scene
@@ -93,7 +93,7 @@ namespace ConsoleRPG
                     }
                 case Door.BlockedDoor:
                     {
-                        new GameObject(Constants.WINDOW_WIDTH / 2 - 2, Constants.WINDOW_HEIGHT - 9, ConsoleColor.Gray, map, ' ', true);
+                        new GameObject(Constants.WINDOW_WIDTH / 2 - 2, Constants.WINDOW_HEIGHT - 9, ConsoleColor.DarkGray, map, ' ', true);
                         break;
                     }
             }

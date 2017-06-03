@@ -14,7 +14,7 @@ namespace ConsoleRPG
             {
                 for (int y = 0; y < Constants.WINDOW_HEIGHT - 9; y++)
                 {
-                    if ((x > Constants.WINDOW_WIDTH / 2 - 8 && x < Constants.WINDOW_WIDTH / 2 + 5))
+                    if (x > Constants.WINDOW_WIDTH / 2 - 8 && x < Constants.WINDOW_WIDTH / 2 + 5)
                     {
                         continue;
                     }
@@ -26,8 +26,7 @@ namespace ConsoleRPG
             drawRoom();
 
             drawTopPortal(Destinations.RightRoom, Door.OpenDoor);
-
-            Console.BackgroundColor = Constants.BACKGROUND_COLOR;
+            
             new Item(Constants.WINDOW_WIDTH / 2 + 1, Constants.WINDOW_HEIGHT - 10, map, Type.ether);
             new Item(Constants.WINDOW_WIDTH / 2 - 5, Constants.WINDOW_HEIGHT - 10, map, Type.potion);
             new Item(Constants.WINDOW_WIDTH/2 - 2, Constants.WINDOW_HEIGHT - 10, map, Type.iceWand);
