@@ -102,8 +102,9 @@ namespace ConsoleRPG
             newX = this.x + x;
             newY = this.y + y;
 
+
             if (checkBounds() && checkForGameObject())
-            {
+            {            
                 remove();
                 draw();
                 if (!(map[newX, newY] is Portal))
@@ -112,6 +113,11 @@ namespace ConsoleRPG
                 }
                 this.x = newX;
                 this.y = newY;
+            }
+            else //gameobject did not take the new step so keep new posistion the same as current position
+            {
+                newX = this.x;
+                newY = this.y;
             }
         }
         public virtual void draw()

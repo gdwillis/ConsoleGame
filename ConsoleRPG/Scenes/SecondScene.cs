@@ -12,22 +12,33 @@ namespace ConsoleRPG
         {
             drawRoom();
             drawBottomPortal(Destinations.FirstRoom, Door.OpenDoor);
-            drawLeftPortal(Destinations.BoosDoorRoom, Door.YellowDoor);
+            drawLeftPortal(Destinations.BossDoorRoom, Door.YellowDoor);
             drawRightPortal(Destinations.RightRoom, Door.BlueDoor);
             new Item(Constants.WINDOW_WIDTH - 20, 7, map, Type.blueKey);
 
         }
 
-        public override void resetEnemies()
+        public override void reset()
         {
-            base.resetEnemies();
+            base.reset();
             new Enemy(Constants.WINDOW_WIDTH / 2, 6, ConsoleColor.Yellow, map, 'E');
             new Enemy(Constants.WINDOW_WIDTH / 2, 8, ConsoleColor.Yellow, map, 'E');
         }
 
-        public override void placePlayer()
+        public override void placePlayer(FromDirection fromDirection = FromDirection.Top)
         {
-            player.initialize(Constants.WINDOW_WIDTH / 2, Constants.WINDOW_HEIGHT - 10, map);
+            if (player.previouseRoom == Destinations.FirstRoom)
+            {
+                base.placePlayer(FromDirection.Bottom);
+            }
+            else if (player.previouseRoom == Destinations.RightRoom)
+            {
+                base.placePlayer(FromDirection.Right);
+            }
+            else if (player.previouseRoom == Destinations.BossDoorRoom)
+            {
+                base.placePlayer(FromDirection.Left);
+            }
         }
 
     }

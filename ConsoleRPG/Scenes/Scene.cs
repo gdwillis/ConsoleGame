@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace ConsoleRPG
 {
-    enum Destinations { Outside, FirstRoom, SecondRoom, BoosDoorRoom, BossRoom, RightRoom, WandRoom, TopRightRoom, BossKeyRoom };
-    enum Door { RedDoor, YellowDoor, BlueDoor, OpenDoor }
+    enum Destinations { Outside, FirstRoom, SecondRoom, BossDoorRoom, BossRoom, RightRoom, WandRoom, TopRightRoom, BossKeyRoom };
+    enum FromDirection { Top, Bottom, Left, Right }
+    enum Door { RedDoor, YellowDoor, BlueDoor, OpenDoor, BlockedDoor }
     class Scene
     {
         public GameObject[,] map;
@@ -52,7 +53,12 @@ namespace ConsoleRPG
                     }
                 case Door.OpenDoor:
                     {
-                       new GameObject(Constants.WINDOW_WIDTH / 2 - 2, 1, ConsoleColor.Black, map);
+                        new GameObject(Constants.WINDOW_WIDTH / 2 - 2, 1, ConsoleColor.Black, map);
+                        break;
+                    }
+                case Door.BlockedDoor:
+                    {
+                        new GameObject(Constants.WINDOW_WIDTH / 2 - 2, 1, ConsoleColor.DarkGray, map, ' ', true);
                         break;
                     }
             }
@@ -85,6 +91,11 @@ namespace ConsoleRPG
                        new GameObject(Constants.WINDOW_WIDTH / 2 - 2, Constants.WINDOW_HEIGHT - 9, ConsoleColor.Black, map);
                         break;
                     }
+                case Door.BlockedDoor:
+                    {
+                        new GameObject(Constants.WINDOW_WIDTH / 2 - 2, Constants.WINDOW_HEIGHT - 9, ConsoleColor.Gray, map, ' ', true);
+                        break;
+                    }
             }
 
             new Portal(Constants.WINDOW_WIDTH / 2 - 2, Constants.WINDOW_HEIGHT - 8, ConsoleColor.Black, map, destination, player);         
@@ -112,6 +123,11 @@ namespace ConsoleRPG
                 case Door.OpenDoor:
                     {
                         new GameObject(1, Constants.WINDOW_HEIGHT / 2 - 5, ConsoleColor.Black, map);
+                        break;
+                    }
+                case Door.BlockedDoor:
+                    {
+                        new GameObject(1, Constants.WINDOW_HEIGHT / 2 - 5, ConsoleColor.Gray, map, ' ', true);
                         break;
                     }
             }
@@ -143,6 +159,11 @@ namespace ConsoleRPG
                         new GameObject(Constants.WINDOW_WIDTH - 2, Constants.WINDOW_HEIGHT / 2 - 5, ConsoleColor.Black, map);
                         break;
                     }
+                case Door.BlockedDoor:
+                    {
+                        new GameObject(Constants.WINDOW_WIDTH - 2, Constants.WINDOW_HEIGHT / 2 - 5, ConsoleColor.Gray, map, ' ', true);
+                        break;
+                    }
             }
 
             new Portal(Constants.WINDOW_WIDTH - 1, Constants.WINDOW_HEIGHT / 2 - 5, ConsoleColor.Black, map, destination, player);
@@ -172,22 +193,7 @@ namespace ConsoleRPG
             Array.Clear(map, 0, map.Length);
         }
 
-        public void draw()
-        {       
-            for(int x = 0; x < map.GetLength(0); x++)
-            {
-                for (int y = 0; y < map.GetLength(1); y++)
-                {
-                    if (map[x, y] != null)
-                    { 
-                        map[x, y].draw();
-                    }
-                }
-            }
-        //    player.draw();
-        }
-
-        public void update()
+        public virtual void update()
         {
 
 
@@ -218,12 +224,51 @@ namespace ConsoleRPG
             //}
         }
 
-     
-        public virtual void placePlayer()
+        public void draw()
         {
+            for (int x = 0; x < map.GetLength(0); x++)
+            {
+                for (int y = 0; y < map.GetLength(1); y++)
+                {
+                    if (map[x, y] != null)
+                    {
+                        map[x, y].draw();
+                    }
+                }
+            }
+            player.drawInventory();
+            player.draw();
         }
 
-        public virtual void resetEnemies()
+        public virtual void placePlayer(FromDirection fromDirection = FromDirection.Top)
+        {
+            switch(fromDirection)
+            {
+                case FromDirection.Top:
+                    {
+                        player.initialize(Constants.WINDOW_WIDTH / 2 - 2, 2, map);
+                        break;
+                    }
+                case FromDirection.Right:
+                    {
+                        player.initialize(Constants.WINDOW_WIDTH - 3, Constants.WINDOW_HEIGHT / 2 - 5, map);
+                        break;
+                    }
+                case FromDirection.Left:
+                    {
+                        player.initialize(2, Constants.WINDOW_HEIGHT / 2 - 5, map);
+                        break;
+                    }
+                case FromDirection.Bottom:
+                    {
+                        player.initialize(Constants.WINDOW_WIDTH / 2 - 2, Constants.WINDOW_HEIGHT - 10, map);
+                        break;
+                    }
+            }
+        
+        }
+
+        public virtual void reset()
         {
             for (int x = 0; x < map.GetLength(0); x++)
             {

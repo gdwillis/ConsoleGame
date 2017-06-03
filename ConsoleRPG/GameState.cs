@@ -16,21 +16,27 @@ namespace ConsoleRPG
         static OutsideScene outsideScene;
         static FirstScene firstScene;
         static SecondScene secondScene;
+        static RightScene rightScene;
+        static BossDoorScene bossScene;
+        static WandScene wandScene;
+        static TopRightScene topRightRoom; 
 
         static Scene currentScene; 
         public static void Start()
         {
             player = new Player();
-            player.currentRoom = Destinations.Outside; 
+            player.currentRoom = Destinations.TopRightRoom; 
             outsideScene = new OutsideScene(player);
             firstScene = new FirstScene(player);
-            secondScene = new SecondScene(player); 
-           
-            
+            secondScene = new SecondScene(player);
+            rightScene = new RightScene(player);
+            bossScene = new BossDoorScene(player);
+            wandScene = new WandScene(player);
+            topRightRoom = new TopRightScene(player);
             
             hasLevelStarted = false;
             hasGameEnded = false;
-            while (!hasGameEnded)
+            while (!hasGameEnded && player.IsAlive)
             {
                 if (!hasLevelStarted)
                 {
@@ -78,6 +84,8 @@ namespace ConsoleRPG
 
                 Thread.Sleep(Constants.GAME_SPEED);
             }
+
+            EndGame(); 
         }
 
         static void EndGame()
@@ -113,21 +121,25 @@ namespace ConsoleRPG
                         break;
                     }
 
-                case Destinations.BoosDoorRoom:
+                case Destinations.BossDoorRoom:
                     {
+                        currentScene = bossScene; 
                         break;
                     }
 
                 case Destinations.RightRoom:
                     {
+                        currentScene = rightScene;
                         break;
                     }
                 case Destinations.WandRoom:
                     {
+                        currentScene = wandScene; 
                         break;
                     }
                 case Destinations.TopRightRoom:
                     {
+                        currentScene = topRightRoom;
                         break;
                     }
                 case Destinations.BossKeyRoom:
@@ -141,10 +153,9 @@ namespace ConsoleRPG
                     //World.reDrawMap(); 
             }          
             currentScene.clearScreen();
-            currentScene.resetEnemies(); 
+            currentScene.reset(); 
             currentScene.placePlayer();
             currentScene.draw();
-            player.drawInventory(); 
            
         }
     }

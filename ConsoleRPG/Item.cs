@@ -8,7 +8,7 @@ namespace ConsoleRPG
 {
     //programming exercise: change this class to be more object oriented by using inheritance
 
-    enum Type { blueKey, yellowKey, redKey, potion, ether, fireWand, oldMan, bluedoor, reddoor, yellowdoor };
+    enum Type { blueKey, yellowKey, redKey, potion, ether, iceWand, oldMan, bluedoor, reddoor, yellowdoor, lavaTile, block, trigger };
    
     class Item : GameObject
     {
@@ -82,7 +82,7 @@ namespace ConsoleRPG
                         label = 'E';
                         break;
                     }
-                case Type.fireWand:
+                case Type.iceWand:
                     {
                         color = ConsoleColor.DarkMagenta;
                         label = 'W';
@@ -115,6 +115,25 @@ namespace ConsoleRPG
                         color = ConsoleColor.Yellow;
                         label = 'D';
                         canRemove = false;
+                        break;
+                    }
+                case Type.lavaTile:
+                    {
+                        color = ConsoleColor.Red;
+                        label = ' ';
+                        break;
+                    }
+                case Type.block:
+                    {
+                        color = ConsoleColor.Green;
+                        label = 'B';
+                        break;
+                    }
+                case Type.trigger:
+                    {
+                        color = ConsoleColor.DarkGreen;
+                        label = 'T';
+                        canRemove = false; 
                         break;
                     }
             }
@@ -158,7 +177,7 @@ namespace ConsoleRPG
                         inventory.Ether++;
                         break;
                     }
-                case Type.fireWand:
+                case Type.iceWand:
                     {
                         presentFireWandDialog(inventory);
                         inventory.FireWand = true;
@@ -183,6 +202,11 @@ namespace ConsoleRPG
                 case Type.yellowdoor:
                     {
                         presentDoorDialog(inventory);
+                        break;
+                    }
+                case Type.trigger:
+                    {
+                        presentTriggerDialog(inventory);
                         break;
                     }
             }
@@ -295,6 +319,14 @@ namespace ConsoleRPG
 
         }
 
+        void presentTriggerDialog(Inventory inventory)
+        {
+            inventory.clearInventoryBox();
+            Console.WriteLine("It looks like something can be pushed on to this switch.");
+            hasEndedInteraction = true;
+
+        }
+
         void presentOldManDialog(Inventory inventory)
         {
             inventory.clearInventoryBox();
@@ -342,6 +374,35 @@ namespace ConsoleRPG
             }
 
             dialogCounter++; 
+        }
+
+        public bool isSet;
+ 
+        protected override bool checkForGameObject()
+        {
+            GameObject gameObject = map[newX, newY];
+            if (gameObject == null)
+            {
+                return true;
+            }
+            if (gameObject is Item)
+            {
+                Item item = (Item) gameObject;
+                if(item.type == Type.trigger)
+                {
+                    item.isSet = true;
+                }
+                return true;
+            }
+            else if (gameObject.HasCollision)
+            {
+                return false;
+            }       
+            else
+            {
+
+                return true;
+            }
         }
 
     }

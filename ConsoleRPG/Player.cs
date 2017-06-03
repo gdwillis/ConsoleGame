@@ -11,14 +11,20 @@ namespace ConsoleRPG
         enum Direction { North, South, East, West };
         Direction direction = Direction.North;
 
-        public Destinations currentRoom; 
+        public Destinations currentRoom;
+        public Destinations previouseRoom;
 
-       // GameObject sword = new GameObject(ConsoleColor.DarkCyan);
-      //  GameObject fireWand = new GameObject(ConsoleColor.Red);
+        // GameObject sword = new GameObject(ConsoleColor.DarkCyan);
+        //  GameObject fireWand = new GameObject(ConsoleColor.Red);
         Item item; 
         public bool hasCompleteLevel = false;
         Inventory inventory;
-       
+        private bool isAlive;
+        private ConsoleKey saveKey; 
+        public bool IsAlive
+        {
+            get { return isAlive; }
+        }
         
         bool isInteracting;
         public bool IsInteracting
@@ -28,6 +34,7 @@ namespace ConsoleRPG
 
         public Player(): base()
         {
+            isAlive = true; 
             color = ConsoleColor.Blue;
             label = 'P';
             inventory = new Inventory();
@@ -52,7 +59,7 @@ namespace ConsoleRPG
         {
             // ConsoleKeyInfo keyInfo = Console.ReadKey(true);
 
-           
+            saveKey = keyPressed.Key; 
                 switch (keyPressed.Key)
                 {
                     case ConsoleKey.UpArrow:
@@ -194,10 +201,46 @@ namespace ConsoleRPG
                 return true; 
             }
             if(gameObject is Item)
-            {
+            {               
                 item = (Item)gameObject;
-                item.interact(inventory);
-                isInteracting = true;
+                if (item.Type == Type.lavaTile)
+                {
+                    isAlive = false;
+                }
+                else if (item.Type == Type.block)
+                {
+                    switch(saveKey)
+                    {
+                        case ConsoleKey.UpArrow:
+                            {
+                                item.update(0, -1);
+                                break; 
+                            }
+                        case ConsoleKey.DownArrow:
+                            {
+                                item.update(0, 1);
+                                break;
+                            }
+                        case ConsoleKey.LeftArrow:
+                            {
+                                item.update(-1, 0);
+                                break;
+                            }
+                        case ConsoleKey.RightArrow:
+                            {
+                                item.update(1, 0);
+                                break;
+                            }
+                    }
+                
+                  
+                }
+              
+                else
+                {
+                    item.interact(inventory);
+                    isInteracting = true;
+                }
                 
 
             }

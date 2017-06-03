@@ -21,6 +21,7 @@ namespace ConsoleRPG
         public void transitionToNextRoom()
         {
             player.hasCompleteLevel = true;
+            player.previouseRoom = player.currentRoom;
             player.currentRoom = destination; 
         }
     }

@@ -85,7 +85,7 @@ namespace ConsoleRPG
 
         }
 
-        public override void placePlayer()
+        public override void placePlayer(FromDirection fromDirection = FromDirection.Top)
         {
             player.initialize(Constants.WINDOW_WIDTH / 2, 21, map);
         }

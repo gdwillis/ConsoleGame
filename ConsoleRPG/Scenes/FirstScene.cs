@@ -15,7 +15,7 @@ namespace ConsoleRPG
             //draw back door
             for (int x = Constants.WINDOW_WIDTH / 2 - 4; x < Constants.WINDOW_WIDTH / 2 + 1; x++)
             {
-                for (int y = Constants.WINDOW_HEIGHT - 8; y < Constants.WINDOW_HEIGHT - 6; y++)
+                for (int y = Constants.WINDOW_HEIGHT - 9; y < Constants.WINDOW_HEIGHT - 6; y++)
                 {
                     new GameObject(x, y, ConsoleColor.DarkGray, map, ' ', true);  
                     
@@ -29,15 +29,22 @@ namespace ConsoleRPG
 
         }
 
-        public override void resetEnemies()
+        public override void reset()
         {
-            base.resetEnemies();        
+            base.reset();        
             new Enemy(Constants.WINDOW_WIDTH / 2, 6, ConsoleColor.Yellow, map, 'E');
         }
 
-        public override void placePlayer()
+        public override void placePlayer(FromDirection fromDirection = FromDirection.Top)
         {
-            player.initialize(Constants.WINDOW_WIDTH / 2, Constants.WINDOW_HEIGHT - 10, map);
+            if (player.previouseRoom == Destinations.Outside)
+            {
+                base.placePlayer(FromDirection.Bottom);
+            }
+            else if(player.previouseRoom == Destinations.SecondRoom)
+            {
+                base.placePlayer(FromDirection.Top);
+            }
         }
     }
 }

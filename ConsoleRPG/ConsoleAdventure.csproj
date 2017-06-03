@@ -43,7 +43,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
-    <Compile Include="Enemy.cs" />
+    <Compile Include="Enemies\Enemy.cs" />
+    <Compile Include="Enemies\Flyer.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="Inventory.cs" />
@@ -53,10 +54,14 @@
     <Compile Include="Portal.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scenes\BossDoorScene.cs" />
+    <Compile Include="Scenes\RightScene.cs" />
     <Compile Include="Scenes\SecondScene.cs" />
     <Compile Include="Scenes\FirstScene.cs" />
     <Compile Include="Scenes\OutsideScene.cs" />
     <Compile Include="Scenes\Scene.cs" />
+    <Compile Include="Scenes\TopRightScene.cs" />
+    <Compile Include="Scenes\WandScene.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
