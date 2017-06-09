@@ -31,6 +31,7 @@ namespace ConsoleRPG
         }
 
        
+    
 
         protected void drawTopPortal(Destinations destination, Door door)
         {
@@ -211,6 +212,7 @@ namespace ConsoleRPG
             {
                 enemy.moveEnemy();
             }
+            
             //for (int x = 0; x < map.GetLength(0); x++)
             //{
             //    for (int y = 0; y < map.GetLength(1); y++)

@@ -48,6 +48,7 @@
     <Compile Include="Enemies\Flyer.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="GameState.cs" />
+    <Compile Include="IceWand.cs" />
     <Compile Include="Inventory.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="Npc.cs" />
@@ -66,6 +67,8 @@
     <Compile Include="Scenes\Scene.cs" />
     <Compile Include="Scenes\TopRightScene.cs" />
     <Compile Include="Scenes\WandScene.cs" />
+    <Compile Include="Sword.cs" />
+    <Compile Include="Weapon.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

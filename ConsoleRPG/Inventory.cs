@@ -61,12 +61,14 @@ namespace ConsoleRPG
             }
         }
 
-        public void draw()
+        public void draw(int health, int magic)
         {
             clearInventoryBox(); 
             drawBorders();
             drawItemAmounts();
             drawWeapons();
+            drawHealth(health);
+            drawMagic(magic);
          
         }
         const int margin = 5;
@@ -75,7 +77,6 @@ namespace ConsoleRPG
 
         public void drawBorders()
         {
-         
             Console.BackgroundColor = Constants.FOREGROUND_COLOR;
             Console.ForegroundColor = Constants.FOREGROUND_COLOR;
 
@@ -149,10 +150,26 @@ namespace ConsoleRPG
 
         public void drawItemAmounts()
         {
-            //draw key amounts
             Console.BackgroundColor = Constants.BACKGROUND_COLOR;
+
+            //draw potion amounts 
+            int y = Console.WindowHeight - 3;
             int x = margin + 19;
-            int y = Console.WindowHeight - 5;
+            Console.SetCursorPosition(x, y);
+            System.Console.Write("x" + potion);
+
+            Console.ForegroundColor = Constants.FOREGROUND_COLOR;
+            x = margin + (Console.WindowWidth / 5) + 17;
+            Console.SetCursorPosition(x, y);
+            System.Console.Write("x" + ether);
+
+            //draw key amounts
+       
+            
+            y = Console.WindowHeight - 5;
+          
+           
+            x = Console.WindowWidth - (margin + 4);
             Console.SetCursorPosition(x, y);
             Console.ForegroundColor = ConsoleColor.Blue;
             System.Console.Write("x" + blueKey);
@@ -163,26 +180,60 @@ namespace ConsoleRPG
             Console.ForegroundColor = ConsoleColor.Red;
             System.Console.Write("x" + redKey);
 
-            //draw potion amounts 
-            Console.ForegroundColor = Constants.FOREGROUND_COLOR;
-            x = Console.WindowWidth - (margin + 4);
-            y = Console.WindowHeight - 3;
-            Console.SetCursorPosition(x, y);           
-            System.Console.Write("x" + potion);
 
-            x -= (Console.WindowWidth / 5) - 2;
-            Console.SetCursorPosition(x, y);
-            System.Console.Write("x" + ether);
+
+
+      
+
 
         }
+        private void drawHealth(int health)
+        {
+            //draw health
+            const int MAX_HEALTH = 3;
+            if (health > MAX_HEALTH)
+            {
+                health = MAX_HEALTH; 
+            }
+            int x = margin + 20;
+            int y = Console.WindowHeight - 5;
+            for (int i = 1; i <= health; i++)
+            {               
+                Console.BackgroundColor = ConsoleColor.Red;
+                Console.ForegroundColor = ConsoleColor.Red;            
+                Console.SetCursorPosition(x, y);
+                System.Console.Write(" ");
+                x -= 2;
+            }
+        }
 
+        private void drawMagic(int magic)
+        {
+            //draw health
+            const int MAX_MAGIC = 5;
+            if (magic > MAX_MAGIC)
+            {
+                magic = MAX_MAGIC;
+            }
+            int x = margin + (Console.WindowWidth / 5) + 18;
+            int y = Console.WindowHeight - 5;
+            for (int i = 1; i <= magic; i++)
+            {
+                Console.BackgroundColor = ConsoleColor.Cyan;
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.SetCursorPosition(x, y);
+                System.Console.Write(" ");
+                x -= 2;
+            }
+        }
         public void drawWeapons()
         {
             if (fireWand)
             {
                 Console.ForegroundColor = Constants.FOREGROUND_COLOR;
                 Console.BackgroundColor = Constants.FOREGROUND_COLOR;
-                int x = margin + (Console.WindowWidth / 5 * 2) + 9;
+
+                int x = (Console.WindowWidth / 5) * 4 - (margin + 4);
                 int y = Console.WindowHeight - 3;
                 Console.SetCursorPosition(x, y);
                 System.Console.Write(' ');
@@ -192,7 +243,7 @@ namespace ConsoleRPG
             {
                 Console.ForegroundColor = Constants.FOREGROUND_COLOR;
                 Console.BackgroundColor = Constants.FOREGROUND_COLOR;
-                int x = margin + (Console.WindowWidth / 5) + 9;
+                int x = margin + (Console.WindowWidth / 5 * 2) + 9;
                 int y = Console.WindowHeight - 3;
                 Console.SetCursorPosition(x, y);
                 System.Console.Write(' ');

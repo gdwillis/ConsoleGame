@@ -6,12 +6,36 @@ using System.Threading.Tasks;
 
 namespace ConsoleRPG
 {
+    //best place to put enums? 
+    enum Direction { North, South, East, West, Stay };
+
     class GameObject
     {
-        protected int x;
-        protected int y;
-        protected int newX;
-        protected int newY;
+        private int x;
+        private int y;
+        private int nextX;
+        private int nextY;
+
+        public int NextX
+        {
+            get { return nextX;  }
+        }
+
+        public int NextY
+        {
+            get { return nextY; }
+        }
+
+        public int X
+        {
+            get { return x; }
+        }
+
+        public int Y
+        {
+            get { return y; }
+        }
+
         protected bool hasCollision;
         protected GameObject[,] map;
 
@@ -21,25 +45,6 @@ namespace ConsoleRPG
             set { hasCollision = value; }
         }
 
-        public int X
-        {
-            get { return x; } 
-        }
-
-        public int Y
-        {
-            get { return y;  }
-        }
-
-        public int NewX
-        {
-            get { return newX; }
-        }
-
-        public int NewY
-        {
-            get { return newY; }
-        }
 
         protected ConsoleColor color;
         protected char label;
@@ -55,16 +60,22 @@ namespace ConsoleRPG
             set { color = value; }
         }
 
+        public virtual void initialize(int x, int y, GameObject[,] map)
+        {
+            this.map = map;
+            this.x = x;
+            this.y = y;
+            this.nextX = x;
+            this.nextY = y;
+            this.map[this.x, this.y] = this;
+        }
+
         public GameObject()
         {
         }
 
         public GameObject(ConsoleColor color, GameObject[,] map)
         {
-            x = 0;
-            y = 0;
-            newX = x;
-            newY = y;
             this.color = color;
             this.map = map;
             this.map[this.x, this.y] = this;
@@ -72,52 +83,70 @@ namespace ConsoleRPG
      
         public GameObject(int x, int y, GameObject[,] map, bool hasCollision = false)
         {
-            this.x = x;
-            this.y = y;
-            newX = x;
-            newY = y;
+            initialize(x,y,map);
             this.hasCollision = hasCollision;
-            this.map = map;
-            this.map[this.x, this.y] = this;
             label = ' ';
             color = ConsoleColor.Black; 
         }
 
         public GameObject(int x, int y, ConsoleColor color, GameObject[,] map, char label = ' ', bool hasCollision = false)
         {
-            this.x = x;
-            this.y = y;
-            newX = x;
-            newY = y;
-            this.map = map;
-            this.map[this.x, this.y] = this;
+            initialize(x, y, map);
             this.color = color;
             this.label = label;
             this.hasCollision = hasCollision; 
             
         }
 
-        public virtual void update(int x , int y)
+        public virtual void update(Direction direction)
         {
-            newX = this.x + x;
-            newY = this.y + y;
+            switch (direction)
+            {
+                case Direction.North:
+                    {
+                        nextY -= 1;
+                        break;
+                    }
+                case Direction.South:
+                    {
+                        nextY += 1;
+                        break;
+                    }
+                case Direction.East:
+                    {
+                        nextX += 1;
+                        break;
+                    }
+                case Direction.West:
+                    {
+                        nextX -= 1; 
+                        break;
+                    }
 
+                case Direction.Stay:
+                    {
+                        nextX = x;
+                        nextY = y; 
+                        break;
+                    }
+            }
 
             if (checkBounds() && checkForGameObject())
             {            
                 remove();
                 draw();
-                if (!(map[newX, newY] is Portal))
+                //so that player does not overwrite portal 
+                if (!(map[nextX, nextY] is Portal))
                 {
-                    map[newX, newY] = this;
+                    map[nextX, nextY] = this;
                 }
-                this.x = newX;
-                this.y = newY;
+                this.x = nextX;
+                this.y = nextY;
             }
             else //gameobject did not take the new step so keep new posistion the same as current position
             {
-                newX = this.x;
-                newY = this.y;
+                nextX = this.x;
+                nextY = this.y;
             }
         }
         public virtual void draw()
@@ -126,38 +155,42 @@ namespace ConsoleRPG
             Console.BackgroundColor = color;
             Console.ForegroundColor = Constants.FOREGROUND_COLOR;
 
-            Console.SetCursorPosition(newX, newY);
+            Console.SetCursorPosition(nextX, nextY);
             Console.Write(label);
 
         }
       
         public virtual void remove()
         {
-            Console.BackgroundColor = Constants.BACKGROUND_COLOR;
-            Console.ForegroundColor = Constants.BACKGROUND_COLOR;
-            Console.SetCursorPosition(x, y);
-            Console.Write(label);
-            if (!(map[x, y] is Portal))
+            if (map[x, y] == this)
             {
+                Console.BackgroundColor = Constants.BACKGROUND_COLOR;
+                Console.ForegroundColor = Constants.BACKGROUND_COLOR;
+                Console.SetCursorPosition(x, y);
+                Console.Write(label);
                 map[x, y] = null;
             }
+
         }
 
-        bool checkBounds()
+
+        protected virtual bool checkBounds()
         {
             
-            if (newX < 0 || newX >= Console.WindowWidth || newY < 0 || newY >= Console.WindowHeight)
+            if (nextX < 0 || nextX >= Console.WindowWidth || nextY < 0 || nextY >= Console.WindowHeight)
             {
                 return false;
             }
 
             return true;
         }
-
+      
         protected virtual bool checkForGameObject()
         {
             return false; 
         }
+
+       
         
     }
 }

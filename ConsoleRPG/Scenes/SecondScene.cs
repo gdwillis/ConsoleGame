@@ -21,8 +21,8 @@ namespace ConsoleRPG
         public override void reset()
         {
             base.reset();
-            new Enemy(Constants.WINDOW_WIDTH / 2, 6, ConsoleColor.Yellow, map, 'E');
-            new Enemy(Constants.WINDOW_WIDTH / 2, 8, ConsoleColor.Yellow, map, 'E');
+            new Enemy(Constants.WINDOW_WIDTH / 2, 3, ConsoleColor.Yellow, map, 'E');
+            new Enemy(Constants.WINDOW_WIDTH / 2, 2, ConsoleColor.Yellow, map, 'E');
         }
 
         public override void placePlayer(FromDirection fromDirection = FromDirection.Top)

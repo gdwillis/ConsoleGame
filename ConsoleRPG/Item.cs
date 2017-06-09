@@ -420,7 +420,7 @@ namespace ConsoleRPG
  
         protected override bool checkForGameObject()
         {
-            GameObject gameObject = map[newX, newY];
+            GameObject gameObject = map[NextX, NextY];
             if (gameObject == null)
             {
                 return true;

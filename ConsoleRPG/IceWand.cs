@@ -6,20 +6,13 @@ using System.Threading.Tasks;
 
 namespace ConsoleRPG
 {
-    
-    class Enemy: GameObject
+    class IceWand: Weapon
     {
-        public string s = "I am an enemy";
-        public Enemy(int x, int y, ConsoleColor color, GameObject[,] map, char label) : base(x, y, color, map, label, true)
+        public IceWand() : base()
         {
-           
+            color = ConsoleColor.Cyan;
         }
-
-        public void moveEnemy()
-        {
-            update(Direction.East);           
-        }
-
+      
         protected override bool checkForGameObject()
         {
             GameObject gameObject = map[NextX, NextY];
@@ -27,16 +20,33 @@ namespace ConsoleRPG
             {
                 return true;
             }
-       
+            
+
+            if (gameObject is Player)
+            {
+                return true; 
+            }
+            if (gameObject is Item)
+            {
+                Item item = (Item)gameObject;
+                if (item.Type == Type.lavaTile)
+                {
+                    item.remove();
+                    return true; 
+                }
+            }
+            
             if (gameObject.HasCollision)
             {
+                die();
                 return false;
             }
             else
             {
-
                 return true;
             }
+
+
         }
     }
 }

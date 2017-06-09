@@ -25,6 +25,7 @@ namespace ConsoleRPG
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
+    
 
     class Program
     {
@@ -42,10 +43,10 @@ namespace ConsoleRPG
             //  copy the buffer from its original position (0, 0) to (0, 24). MoveBufferArea
             //  does NOT reposition the cursor, which will prevent the cursor from wrapping
             //  to a new line when the buffer's width is filled.
-           
-            //return map;
-            GameState.Start();
 
+            //return map;
+             GameState.Start();
+     
         }
 
     }

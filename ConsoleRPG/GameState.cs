@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
+
 namespace ConsoleRPG
 {
     static class GameState
@@ -22,10 +23,10 @@ namespace ConsoleRPG
         static TopRightScene topRightRoom;
         static BossKeyScene bossKeyScene;
         static BossScene bossScene;
-        static PrincessScene princessScene; 
-
+        static PrincessScene princessScene;
         public static void Start()
         {
+        
             player = new Player();
             player.currentRoom = Destinations.Outside; 
             outsideScene = new OutsideScene(player);
@@ -40,6 +41,7 @@ namespace ConsoleRPG
             princessScene = new PrincessScene(player); 
 
             hasLevelStarted = false;
+            
             while (player.IsAlive && !player.HasWon)
             {
                 if (!hasLevelStarted)
@@ -52,14 +54,18 @@ namespace ConsoleRPG
                     
                     currentScene.update();
 
-
+                    player.updateWeapons(); 
+                    
+                  
                     if (Console.KeyAvailable)
                     {
+                        //readkey has a delay do to windows character repeat delay seeting on the keyboard. 
                         ConsoleKeyInfo keyPressed = Console.ReadKey(true);
+
                         //prevents lag effect  
                         while (Console.KeyAvailable) { Console.ReadKey(true); }
-                        player.movePlayer(keyPressed);
-                        player.attack(keyPressed);
+                        player.movePlayer(keyPressed.Key);
+                        
                         if (keyPressed.Key == ConsoleKey.Escape)
                         {
                             //end application
@@ -69,7 +75,7 @@ namespace ConsoleRPG
                             return;
                         }
                     }
-
+                    
 
 
                 }
@@ -77,7 +83,7 @@ namespace ConsoleRPG
                 {
                     player.interactInput();
                 }
-
+                
                 if (player.hasCompleteLevel)
                 {
                     hasLevelStarted = false;
@@ -85,10 +91,10 @@ namespace ConsoleRPG
                     // EndGame(); 
 
                 }
-
                 Thread.Sleep(Constants.GAME_SPEED);
+               
             }
-
+            
             EndGame(); 
         }
 
@@ -108,15 +114,17 @@ namespace ConsoleRPG
 
             System.Console.WriteLine("Would you like to play again?");
             System.Console.WriteLine("Type (y) for yes or (n) for no");
-            ConsoleKeyInfo keyPressed = Console.ReadKey(true);
-            if (keyPressed.Key == ConsoleKey.Y)
+            ConsoleKeyInfo keyInfo;
+            do
             {
-                Start(); 
-            }
-            else if (keyPressed.Key == ConsoleKey.N)
-            {
-                return;
-            }
+                keyInfo = Console.ReadKey(true);
+                if (keyInfo.Key == ConsoleKey.Y)
+                {
+                    Start();
+                }
+            } while (keyInfo.Key != ConsoleKey.N);
+
+
         }
 
   

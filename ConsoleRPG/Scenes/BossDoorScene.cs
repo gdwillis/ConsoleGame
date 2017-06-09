@@ -14,7 +14,7 @@ namespace ConsoleRPG
             {
                 for (int y = 0; y < Constants.WINDOW_HEIGHT - 9; y++)
                 {
-                    if ((y > Constants.WINDOW_HEIGHT / 2 - 8 && y < Constants.WINDOW_HEIGHT / 2 && x > Constants.WINDOW_WIDTH / 2) || (x > Constants.WINDOW_WIDTH / 2 - 8 && x < Constants.WINDOW_WIDTH / 2 + 5 && y < Constants.WINDOW_HEIGHT / 2))
+                    if (y > Constants.WINDOW_HEIGHT / 2 - 8 && y < Constants.WINDOW_HEIGHT / 2 )
                     {
                         continue;
                     }
@@ -26,7 +26,7 @@ namespace ConsoleRPG
 
             drawRoom();
 
-            // drawTopPortal(Destinations.BossRoom, Door.RedDoor);
+            drawTopPortal(Destinations.BossRoom, Door.RedDoor);
             drawTopPortal(Destinations.BossRoom, Door.OpenDoor);
             drawRightPortal(Destinations.SecondRoom, Door.OpenDoor);
             
