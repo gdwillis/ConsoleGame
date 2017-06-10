@@ -43,7 +43,7 @@ namespace ConsoleRPG
             set { ether = value; }
         }
 
-        bool sword;
+        bool sword = true;
         public bool Sword
         {
             get { return sword; }
@@ -61,14 +61,14 @@ namespace ConsoleRPG
             }
         }
 
-        public void draw(int health, int magic)
+        public void draw(int health, int MAX_HEALTH, int magic, int MAX_MAGIC)
         {
             clearInventoryBox(); 
             drawBorders();
             drawItemAmounts();
             drawWeapons();
-            drawHealth(health);
-            drawMagic(magic);
+            drawHealth(health, MAX_HEALTH);
+            drawMagic(magic, MAX_MAGIC);
          
         }
         const int margin = 5;
@@ -183,14 +183,14 @@ namespace ConsoleRPG
 
 
 
-      
+
 
 
         }
-        private void drawHealth(int health)
+        private void drawHealth(int health, int MAX_HEALTH)
         {
             //draw health
-            const int MAX_HEALTH = 3;
+
             if (health > MAX_HEALTH)
             {
                 health = MAX_HEALTH; 
@@ -207,10 +207,8 @@ namespace ConsoleRPG
             }
         }
 
-        private void drawMagic(int magic)
+        private void drawMagic(int magic, int MAX_MAGIC)
         {
-            //draw health
-            const int MAX_MAGIC = 5;
             if (magic > MAX_MAGIC)
             {
                 magic = MAX_MAGIC;

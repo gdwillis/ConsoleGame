@@ -10,7 +10,8 @@ namespace ConsoleRPG
     {
         public Flyer(int x, int y, ConsoleColor color, GameObject[,] map, char label) : base(x, y, color, map, label)
         {
-
+            health = 2;
+            color = ConsoleColor.Green; 
         }
     }
 }

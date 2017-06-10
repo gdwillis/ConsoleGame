@@ -159,7 +159,15 @@ namespace ConsoleRPG
             Console.Write(label);
 
         }
-      
+
+        public void updateColor(ConsoleColor color)
+        {
+            Console.BackgroundColor = color;
+            Console.ForegroundColor = Constants.FOREGROUND_COLOR;
+            Console.SetCursorPosition(X, Y);
+            Console.Write(label);
+        }
+
         public virtual void remove()
         {
             if (map[x, y] == this)

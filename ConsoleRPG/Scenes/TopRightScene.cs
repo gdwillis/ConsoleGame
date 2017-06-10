@@ -45,8 +45,11 @@ namespace ConsoleRPG
             new Item(Constants.WINDOW_WIDTH - 10, 6, map, Type.block);
             new Item(10, 6, map, Type.block);
             drawTopPortal(Destinations.BossKeyRoom, Door.BlockedDoor);
-            // new Enemy(Constants.WINDOW_WIDTH / 2, 6, ConsoleColor.Yellow, map, 'E');
-            // new Enemy(Constants.WINDOW_WIDTH / 2, 8, ConsoleColor.Yellow, map, 'E');
+            new Flyer(Constants.WINDOW_WIDTH / 2, 6, ConsoleColor.Yellow, map, 'F');
+            new Flyer(Constants.WINDOW_WIDTH / 2, 8, ConsoleColor.Yellow, map, 'F');
+            //comment
+           // drawTopPortal(Destinations.BossKeyRoom, Door.OpenDoor);
+          //  draw();
         }
         public override void update()
         {
@@ -59,7 +62,7 @@ namespace ConsoleRPG
             }
         }
         public override void placePlayer(FromDirection fromDirection = FromDirection.Top)
-        {
+        {          
             if (player.previouseRoom == Destinations.RightRoom)
             {
                 base.placePlayer(FromDirection.Bottom);

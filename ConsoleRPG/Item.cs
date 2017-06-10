@@ -176,7 +176,7 @@ namespace ConsoleRPG
                 case Type.redKey:
                     {
                         presentkeyDialog(inventory);
-                        inventory.RedKey++;
+                        inventory.RedKey++; 
                         break;
                     }
                 case Type.potion:

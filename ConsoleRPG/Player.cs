@@ -6,27 +6,27 @@ using System.Threading.Tasks;
 
 namespace ConsoleRPG
 {
-    class Player: GameObject
+    class Player : GameObject
     {
-      
+
         Direction direction = Direction.North;
 
         public Destinations currentRoom;
         public Destinations previouseRoom;
         public Sword sword;
-        IceWand iceWand; 
+        IceWand iceWand;
         // GameObject sword = new GameObject(ConsoleColor.DarkCyan);
         //  GameObject fireWand = new GameObject(ConsoleColor.Red);
-        Item item; 
+        Item item;
         public bool hasCompleteLevel = false;
-        public bool hasSpace = false; 
+        public bool hasSpace = false;
         public ConsoleKey saveKey = ConsoleKey.A;
         Inventory inventory;
         private bool isAlive;
         int health;
         int magic;
         const int MAX_HEALTH = 3;
-        const int MAX_MAGIC = 5; 
+        const int MAX_MAGIC = 10;
         public bool IsAlive
         {
             get { return isAlive; }
@@ -44,22 +44,26 @@ namespace ConsoleRPG
         {
             get { return isInteracting; }
         }
-
-        public Player(): base()
+        public Inventory Inventory
+        {
+            get { return inventory; }
+        }
+        public Player() : base()
         {
             isAlive = true;
-            hasWon = false; 
+            hasWon = false;
             label = 'P';
             color = ConsoleColor.Blue;
             inventory = new Inventory();
             sword = new Sword();
             iceWand = new IceWand();
-            health = 3;
-            magic = 5; 
+            health = MAX_HEALTH;
+            magic = MAX_MAGIC;
+            hasCollision = true;
         }
-   
- 
-   
+
+
+
         public override void initialize(int x, int y, GameObject[,] map)
         {
             base.initialize(x, y, map);
@@ -67,64 +71,67 @@ namespace ConsoleRPG
 
         public void drawInventory()
         {
-            inventory.draw(health, magic); 
+            inventory.draw(health, MAX_HEALTH, magic, MAX_MAGIC);
         }
-     
+
 
         public void updateWeapons()
         {
             iceWand.moveProjectile(this);
-            sword.moveProjectile(this); 
+            sword.moveProjectile(this);
         }
 
         public void killOffWeapons()
         {
-            iceWand.die(); 
+            iceWand.die();
             sword.die();
         }
 
         public void movePlayer(ConsoleKey keyPressed)
         {
             // ConsoleKeyInfo keyInfo = Console.ReadKey(true);
-          
-         
-                switch (keyPressed)
-                {
-                    case ConsoleKey.UpArrow:
-                        {
-                            update(Direction.North);
-                            direction = Direction.North;
-                            break;
-                        }
-
-                    case ConsoleKey.DownArrow:
-                        {
-                            update(Direction.South);
-                            direction = Direction.South;
-                            break;
-                        }
 
 
-                    case ConsoleKey.LeftArrow:
-                        {
-                            update(Direction.West);
-                            direction = Direction.West;
-                            break;
-                        }
+            switch (keyPressed)
+            {
+                case ConsoleKey.UpArrow:
+                    {
+                        direction = Direction.North;
+                        update(direction);
+                        break;
+                    }
 
-                    case ConsoleKey.RightArrow:
-                        {
-                            update(Direction.East);
-                            direction = Direction.East;
-                            break;
-                        }
-            
-                   
-                    case ConsoleKey.Spacebar:
-                        {
+                case ConsoleKey.DownArrow:
+                    {
+
+                        direction = Direction.South;
+                        update(direction);
+                        break;
+                    }
+
+
+                case ConsoleKey.LeftArrow:
+                    {
+
+                        direction = Direction.West;
+                        update(direction);
+                        break;
+                    }
+
+                case ConsoleKey.RightArrow:
+                    {
+
+                        direction = Direction.East;
+                        update(direction);
+                        break;
+                    }
+
+
+                case ConsoleKey.Spacebar:
+                    {
                         attack();
                         break;
-                        }
+                    }
 
                 case ConsoleKey.Q:
                     {
@@ -148,24 +155,23 @@ namespace ConsoleRPG
                         break;
                     }
 
-
-
             }
-
-            saveKey = keyPressed;
 
         }
 
-        void takeDamage()
+
+        public void takeDamage(int damage)
         {
-             health--;
-             inventory.draw(health, magic);
-         
+            updateColor(ConsoleColor.Red);
+            health -= damage;
+            inventory.draw(health, MAX_HEALTH, magic, MAX_MAGIC);
+
             if (health <= 0)
             {
-                isAlive = false; 
+                isAlive = false;
             }
         }
+
         void attack()
         {
             if (inventory.Sword)
@@ -178,13 +184,13 @@ namespace ConsoleRPG
             if (inventory.FireWand && !iceWand.IsActive)
             {
                 if (magic > 0)
-                { 
+                {
                     magic--;
                     iceWand.fire(X, Y, map, direction);
-                    inventory.draw(health, magic);
+                    inventory.draw(health, MAX_HEALTH, magic, MAX_MAGIC);
                 }
 
-             
+
             }
         }
         void consumePotion()
@@ -193,7 +199,7 @@ namespace ConsoleRPG
             {
                 inventory.Potion--;
                 health = MAX_HEALTH;
-                inventory.draw(health, magic);
+                inventory.draw(health, MAX_HEALTH, magic, MAX_MAGIC);
             }
 
         }
@@ -203,18 +209,18 @@ namespace ConsoleRPG
             {
                 inventory.Ether--;
                 magic = MAX_MAGIC;
-                inventory.draw(health, magic);
+                inventory.draw(health, MAX_HEALTH, magic, MAX_MAGIC);
             }
         }
         public void interactInput()
         {
-            if(item.HasEndedInteraction)
+            if (item.HasEndedInteraction)
             {
                 endInteraction();
             }
             else
             {
-                continueDialog(); 
+                continueDialog();
             }
         }
         public void drawMapDebugInfo()
@@ -245,16 +251,16 @@ namespace ConsoleRPG
                             Console.SetCursorPosition(gameObject.X, gameObject.Y);
                             Console.Write(gameObject.Label);
                         }
-                        
+
                     }
 
-                 
+
                 }
             }
         }
         void endInteraction()
         {
-           
+
             if (item.RemoveImmediatly)
             {
                 isInteracting = false;
@@ -262,8 +268,8 @@ namespace ConsoleRPG
                 {
                     item.remove();
                 }
-                inventory.draw(health, magic);
-                
+                inventory.draw(health, MAX_HEALTH, magic, MAX_MAGIC);
+
             }
             else
             {
@@ -274,18 +280,18 @@ namespace ConsoleRPG
                     if (item.CanRemove)
                     {
                         item.remove();
-                    }               
+                    }
                     if (item.Type == Type.princess)
                     {
                         isInteracting = false;
                         hasWon = true;
                         return;
                     }
-                    inventory.draw(health, magic);
+                    inventory.draw(health, MAX_HEALTH, magic, MAX_MAGIC);
                 }
             }
 
-            
+
         }
 
         void continueDialog()
@@ -293,21 +299,21 @@ namespace ConsoleRPG
             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
             if (keyInfo.Key == ConsoleKey.Enter)
             {
-                item.interact(inventory); 
+                item.interact(inventory);
             }
         }
 
 
-        
+
         protected override bool checkForGameObject()
         {
             GameObject gameObject = map[NextX, NextY];
-            if(gameObject == null)
+            if (gameObject == null)
             {
-                return true; 
+                return true;
             }
-            if(gameObject is Item)
-            {               
+            if (gameObject is Item)
+            {
                 item = (Item)gameObject;
                 if (item.Type == Type.lavaTile)
                 {
@@ -315,46 +321,47 @@ namespace ConsoleRPG
                 }
                 else if (item.Type == Type.block)
                 {
-                    switch(saveKey)
+                    switch (direction)
                     {
-                        case ConsoleKey.UpArrow:
+                        case Direction.North:
                             {
                                 item.update(Direction.North);
-                                break; 
+                                break;
                             }
-                        case ConsoleKey.DownArrow:
+                        case Direction.South:
                             {
                                 item.update(Direction.South);
                                 break;
                             }
-                        case ConsoleKey.LeftArrow:
+                        case Direction.West:
                             {
                                 item.update(Direction.West);
                                 break;
                             }
-                        case ConsoleKey.RightArrow:
+                        case Direction.East:
                             {
                                 item.update(Direction.East);
                                 break;
                             }
-                    }                                  
+                    }
                 }
-              
+
                 else
                 {
                     item.interact(inventory);
                     isInteracting = true;
-                }              
+                }
             }
-            if(gameObject is Enemy)
+            if (gameObject is Enemy)
             {
-                takeDamage();
+                Enemy enemy = (Enemy)gameObject;
+                takeDamage(enemy.Damage);
             }
             if (gameObject is Portal)
             {
                 Portal portal = (Portal)gameObject;
                 portal.transitionToNextRoom(direction);
-                return true; 
+                return true;
             }
             if (gameObject.HasCollision)
             {
@@ -362,8 +369,8 @@ namespace ConsoleRPG
             }
             else
             {
-                
-                return true; 
+
+                return true;
             }
         }
     }

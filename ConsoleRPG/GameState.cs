@@ -54,8 +54,8 @@ namespace ConsoleRPG
                     
                     currentScene.update();
 
-                    player.updateWeapons(); 
-                    
+                    player.updateWeapons();
+                    player.updateColor(ConsoleColor.Blue); 
                   
                     if (Console.KeyAvailable)
                     {

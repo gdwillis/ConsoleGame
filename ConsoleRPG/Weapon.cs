@@ -9,6 +9,7 @@ namespace ConsoleRPG
     class Weapon: GameObject
     {
         protected bool isActive;
+        protected int damage; 
         public bool IsActive
         {
             get { return isActive; }
@@ -16,7 +17,8 @@ namespace ConsoleRPG
         Direction direction;
         public Weapon() : base()
         {
-            isActive = false;            
+            isActive = false;
+           
         }
 
         public virtual void fire(int x, int y, GameObject[,] map, Direction direction)
@@ -82,10 +84,33 @@ namespace ConsoleRPG
             if (map != null)
             {
                 remove();
-            }
-   
+            } 
         
         }
-     
+
+        protected override bool checkForGameObject()
+        {
+            GameObject gameObject = map[NextX, NextY];
+            if (gameObject == null)
+            {
+                return true;
+            }
+            if (gameObject is Enemy)
+            {
+                Enemy enemy = (Enemy)gameObject;
+                enemy.takeDamage(damage);
+            }
+
+            if (gameObject.HasCollision)
+            {
+                die();
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
     }
 }

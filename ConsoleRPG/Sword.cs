@@ -14,6 +14,7 @@ namespace ConsoleRPG
         public Sword() : base()
         {
             color = ConsoleColor.DarkCyan;
+            damage = 1; 
         }
 
         public override void fire(int x, int y, GameObject[,] map, Direction direction)
@@ -43,22 +44,7 @@ namespace ConsoleRPG
 
         protected override bool checkForGameObject()
         {
-            base.checkForGameObject();
-            GameObject gameObject = map[NextX, NextY];
-            if (gameObject == null)
-            {
-                return true;
-            }
-            if (gameObject.HasCollision)
-            {
-                die(); 
-                return false;
-            }
-            else
-            {
-
-                return true;
-            }
+           return base.checkForGameObject();
          
         }
     }

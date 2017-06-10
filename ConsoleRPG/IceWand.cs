@@ -11,6 +11,7 @@ namespace ConsoleRPG
         public IceWand() : base()
         {
             color = ConsoleColor.Cyan;
+            damage = 2;
         }
       
         protected override bool checkForGameObject()
@@ -35,16 +36,8 @@ namespace ConsoleRPG
                     return true; 
                 }
             }
-            
-            if (gameObject.HasCollision)
-            {
-                die();
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+
+            return base.checkForGameObject();
 
 
         }
